@@ -18,12 +18,16 @@ class BinaryTree {
 
   minDepth() {
 
+    if (this.root === null || this.root === undefined) return 0;
+
   }
 
   /** maxDepth(): return the maximum depth of the tree -- that is,
    * the length of the longest path from the root to a leaf. */
 
   maxDepth() {
+
+    if (this.root === null || this.root === undefined) return 0;
 
   }
 
@@ -32,13 +36,34 @@ class BinaryTree {
 
   maxSum() {
 
+    if (this.root === null || this.root === undefined) return 0;
+
   }
 
   /** nextLarger(lowerBound): return the smallest value in the tree
    * which is larger than lowerBound. Return null if no such value exists. */
 
   nextLarger(lowerBound) {
+    const toVisitStack = [this.root];
+    let currentVal = null;
 
+    if (this.root === null || this.root === undefined) {
+      return currentVal;
+    }
+
+    while (toVisitStack.length > 0) {
+      const currentNode = toVisitStack.pop();
+      if (currentNode !== null) {
+        if (currentNode.val > lowerBound) {
+          if (currentVal === null || currentNode.val < currentVal) {
+            currentVal = currentNode.val;
+          }
+        }
+        toVisitStack.push(currentNode.left, currentNode.right)
+      }
+
+    }
+    return currentVal;
   }
 
 }
