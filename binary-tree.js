@@ -20,6 +20,23 @@ class BinaryTree {
 
     if (this.root === null || this.root === undefined) return 0;
 
+    const depthFinder = (thisNode) => {
+      //Leaf node found
+      if ((thisNode.left !== null || thisNode.left === undefined) && (thisNode.right !== null || thisNode.right === undefined)) return 1;
+      //This node has only one node, on the left
+      if (thisNode.right !== null || thisNode.right === undefined) return depthFinder(thisNode.left) + 1;
+      //This node has only one node, on the right
+      if (thisNode.left !== null || thisNode.left === undefined) return depthFinder(thisNode.right) + 1;
+
+      const leftDepth = depthFinder(thisNode.left);
+      const rightDepth = depthFinder(thisNode.right)
+
+      if (leftDepth > rightDepth) return rightDepth;
+      return leftDepth;
+
+    }
+
+    return depthFinder(this.root) + 1;
   }
 
   /** maxDepth(): return the maximum depth of the tree -- that is,
@@ -29,6 +46,23 @@ class BinaryTree {
 
     if (this.root === null || this.root === undefined) return 0;
 
+    const depthFinder = (thisNode) => {
+      //Leaf node found
+      if (!thisNode.left && !thisNode.right) return 1;
+      //This node has only one leaf node, on the left
+      if (!thisNode.right) return depthFinder(thisNode.left) + 1;
+      //This node has only one leaf node, on the right
+      if (!thisNode.left) return depthFinder(thisNode.right) + 1;
+
+      const leftDepth = depthFinder(thisNode.left);
+      const rightDepth = depthFinder(thisNode.right);
+
+      if (leftDepth < rightDepth) return rightDepth;
+      return leftDepth;
+
+    }
+
+    return depthFinder(this.root) + 1;
   }
 
   /** maxSum(): return the maximum sum you can obtain by traveling along a path in the tree.
@@ -36,7 +70,22 @@ class BinaryTree {
 
   maxSum() {
 
-    if (this.root === null || this.root === undefined) return 0;
+    let total = 0;
+
+    const maxSumFinder = (thisNode) => {
+      if (!thisNode) return 0;
+      const leftTotal = maxSumFinder(thisNode.left);
+      const rightTotal = maxSumFinder(thisNode.right)
+
+      if (total < thisNode.val + leftTotal + rightTotal) {
+        total = thisNode.val + leftTotal + rightTotal;
+      }
+
+      return Math.max(leftTotal + thisNode.val, rightTotal + thisNode.val, 0)
+    }
+
+    maxSumFinder(this.root);
+    return total;
 
   }
 
